@@ -8,7 +8,6 @@ from baza import *
 import os
 from datetime import datetime
 
-
 # Bot tokeni
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHANNEL_ID = os.getenv("CHANNEL_ID")
@@ -292,17 +291,17 @@ async def testni_yakunlash(callback_query: CallbackQuery):
     natija = []
     for i in range(len(togri_javoblar)):
         if tanlangan_javoblar[i] == togri_javoblar[i]:
-            natija.append(f"{i + 1}-savol: ✅ To'g'ri javob")
+            natija.append(f"{i + 1}-savol: \U00002705 To'g'ri javob")
             t_javob += 1
         else:
-            natija.append(f"{i + 1}-savol: ❌ Notog'ri javob. To'g'ri javob: {togri_javoblar[i]}")
+            natija.append(f"{i + 1}-savol: \U0000274C Notog'ri javob. To'g'ri javob: {togri_javoblar[i]}")
 
-    # Natijani chiqarish
+            # Natijani chiqarish
     response = (f"Test yakunlandi. {callback_query.from_user.first_name}\n {test_count} ta testdan natijangiz:\n\n"
                 "Quyidagi natijalar:\n\n"
                 f"{'\n\n'.join(natija)}\n\n"
-                f"✅ {t_javob} ta testga to'g'ri javob berdingiz. 👍\n\n"
-                f"❌ {test_count - t_javob} ta testga notog'ri javob berdingiz. 😒")
+                f"\U00002705 {t_javob} ta testga to'g'ri javob berdingiz. \U0001F44D\n\n"
+                f"\U0000274C {test_count - t_javob} ta testga notog'ri javob berdingiz. \U0001F614")
 
     finish_keyboard = InlineKeyboardBuilder()
     finish_keyboard.button(text="Testni qaytadan boshlash", callback_data="testni_qayta_yuklash")
