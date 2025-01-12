@@ -8,12 +8,7 @@ from baza import *
 import os
 from datetime import datetime
 
-print("Testlart //////////////////////////////////")
-print("Python>>>>>>>>>>>>>", Python)
-print("C++>>>>>>>>>>>>>", C_plus)
-print("C#>>>>>>>>>>>>>", C_sharp)
 
-print("////////////////////////////////////////////")
 # Bot tokeni
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHANNEL_ID = os.getenv("CHANNEL_ID")
@@ -196,7 +191,6 @@ async def choose_test_count(callback_query: CallbackQuery):
     elif current_test == "php":
         test_data = PHP[:test_count]
     soni = 0
-    print(test_data)
     row = test_data[soni]
     savol = f"{soni + 1}. {row[1]}"
 
@@ -321,6 +315,7 @@ async def testni_yakunlash(callback_query: CallbackQuery):
 
 @dp.callback_query(lambda d: d.data == "testni_qayta_yuklash")
 async def test_qaytadan(callback_query: CallbackQuery):
+    global soni, tanlangan_javoblar, current_test
     if callback_query.data == "testni_qayta_yuklash":
         # Inline tugmalarni yaratish
         keyboard = ReplyKeyboardMarkup(
@@ -344,7 +339,6 @@ async def test_qaytadan(callback_query: CallbackQuery):
 
         # Testni qayta yuklash va o'zgaruvchilarni tozalash
         # Masalan, `tanlangan_javoblar` yoki boshqa global o'zgaruvchilarni tozalash
-        global soni, tanlangan_javoblar, current_test
         soni = 0
         tanlangan_javoblar.clear()
         current_test = None  # Yoki kerakli boshqa o'zgaruvchini tozalash
