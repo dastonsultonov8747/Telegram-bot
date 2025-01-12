@@ -300,7 +300,7 @@ async def testni_yakunlash(callback_query: CallbackQuery):
                 "Quyidagi natijalar:\n\n"
                 f"{'\n'.join(natija)}\n\n"
                 f"\U00002705 {t_javob} ta testga to'g'ri javob berdingiz. \U0001F44D\n\n"  # ✅ 👍
-                f"\U0000274C {test_count - t_javob} ta testga notog'ri javob berdingiz. \U0001F614")  # ❌ 😒
+                f"\U0000274C {test_count - t_javob} ta testga notog'ri javob berdingiz. \U0001F614\n\n")  # ❌ 😒
 
     finish_keyboard = InlineKeyboardBuilder()
     finish_keyboard.button(text="Testni qaytadan boshlash", callback_data="testni_qayta_yuklash")
