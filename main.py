@@ -296,11 +296,11 @@ async def testni_yakunlash(callback_query: CallbackQuery):
         else:
             natija.append(f"{i + 1}-savol: \\U0000274C Notog'ri javob. To'g'ri javob: {togri_javoblar[i]}")
 
-    response = (f"Test yakunlandi. {callback_query.from_user.first_name}\\n{test_count} ta testdan natijangiz:\\n\\n"
-                "Quyidagi natijalar:\\n\\n"
-                f"{'\\n'.join(natija)}\\n\\n"
-                f"\\U00002705 {t_javob} ta testga to'g'ri javob berdingiz. \\U0001F44D\\n\\n"  # ✅ 👍
-                f"\\U0000274C {test_count - t_javob} ta testga notog'ri javob berdingiz. \\U0001F614")  # ❌ 😒
+    response = (f"Test yakunlandi. {callback_query.from_user.first_name}\n{test_count} ta testdan natijangiz:\n\n"
+                "Quyidagi natijalar:\n\n"
+                f"{'\n'.join(natija)}\n\n"
+                f"\U00002705 {t_javob} ta testga to'g'ri javob berdingiz. \U0001F44D\n\n"  # ✅ 👍
+                f"\U0000274C {test_count - t_javob} ta testga notog'ri javob berdingiz. \U0001F614")  # ❌ 😒
 
     finish_keyboard = InlineKeyboardBuilder()
     finish_keyboard.button(text="Testni qaytadan boshlash", callback_data="testni_qayta_yuklash")
