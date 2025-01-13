@@ -1,7 +1,6 @@
 import os
 import psycopg2
 from dotenv import load_dotenv
-from psycopg2 import sql
 import random
 
 # .env fayldan ma'lumotlarni yuklash
