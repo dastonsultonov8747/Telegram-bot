@@ -29,7 +29,7 @@ t_javob = 0
 
 @dp.message(Command(commands=["start"]))
 async def Kanalga_qoshish(message: Message):
-    response = ("Botdan foydalanish uchun oldin quyidagi kanalga a'zo bo'lishingiz kerak.\\n\\n")
+    response = ("Botdan foydalanish uchun oldin quyidagi kanalga a'zo bo'lishingiz kerak.\n\n")
     kanal_button = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text='Kanal havolasi', url=f"https://t.me/{CHANNEL_ID}")],
         [InlineKeyboardButton(text="A'zolikni Tekshirish", callback_data="kanalga_azoligi")]
@@ -48,20 +48,20 @@ async def check_membership(callback_query: CallbackQuery):
             azoligi = True
             keyboard = ReplyKeyboardMarkup(
                 keyboard=[
-                    [KeyboardButton(text="\\U0001F40D Python"),
-                     KeyboardButton(text="\\U0001F4BB JavaScript"),
-                     KeyboardButton(text="\\U0001F4BC Java")],
-                    [KeyboardButton(text="\\U0001F4BB C++"), KeyboardButton(text="\\U0001F537 C#"),
-                     KeyboardButton(text="\\U0001F4BC GO")],
-                    [KeyboardButton(text="\\U0001F4D8 TypeScript"), KeyboardButton(text="\\U0001F4D3 Kotlin"),
-                     KeyboardButton(text="\\U0001F4D6 PHP")],
-                    [KeyboardButton(text="\\U0001F4C3 Bot haqida ma'lumot")]
+                    [KeyboardButton(text="\U0001F40D Python"),
+                     KeyboardButton(text="\U0001F4BB JavaScript"),
+                     KeyboardButton(text="\U0001F4BC Java")],
+                    [KeyboardButton(text="\U0001F4BB C++"), KeyboardButton(text="\U0001F537 C#"),
+                     KeyboardButton(text="\U0001F4BC GO")],
+                    [KeyboardButton(text="\U0001F4D8 TypeScript"), KeyboardButton(text="\U0001F4D3 Kotlin"),
+                     KeyboardButton(text="\U0001F4D6 PHP")],
+                    [KeyboardButton(text="\U0001F4C3 Bot haqida ma'lumot")]
                 ],
                 resize_keyboard=True,
                 one_time_keyboard=True
             )
 
-            response = f"Assalomu alaykum {callback_query.message.from_user.first_name}\\n\\n! Botga xush kelibsiz! O'zingiz bilgan dasturlash tilini tanlang. "
+            response = f"Assalomu alaykum {callback_query.message.from_user.first_name}\n\n! Botga xush kelibsiz! O'zingiz bilgan dasturlash tilini tanlang. "
             await callback_query.message.answer(response, reply_markup=keyboard)
             # ismi = callback_query.from_user.first_name
             # familiasi = callback_query.from_user.last_name
@@ -69,7 +69,7 @@ async def check_membership(callback_query: CallbackQuery):
             # azo_bolgan_vaqti = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             #
             # Foydalanuvchi.append(
-            #     f"ismi: {ismi}\\nfamiliasi: {familiasi}\\nusername: {username}\\nazo_bolgan_vaqti: {azo_bolgan_vaqti}")
+            #     f"ismi: {ismi}\nfamiliasi: {familiasi}\nusername: {username}\nazo_bolgan_vaqti: {azo_bolgan_vaqti}")
             #
             # print(Foydalanuvchi)
         else:
@@ -85,14 +85,14 @@ async def test_command(message: Message):
     if azoligi == True:
         keyboard = ReplyKeyboardMarkup(
             keyboard=[
-                [KeyboardButton(text="\\U0001F40D Python"),
-                 KeyboardButton(text="\\U0001F4BB JavaScript"),
-                 KeyboardButton(text="\\U0001F4BC Java")],
-                [KeyboardButton(text="\\U0001F4BB C++"), KeyboardButton(text="\\U0001F537 C#"),
-                 KeyboardButton(text="\\U0001F4BC GO")],
-                [KeyboardButton(text="\\U0001F4D8 TypeScript"), KeyboardButton(text="\\U0001F4D3 Kotlin"),
-                 KeyboardButton(text="\\U0001F4D6 PHP")],
-                [KeyboardButton(text="\\U0001F4C3 Bot haqida ma'lumot")]
+                [KeyboardButton(text="\U0001F40D Python"),
+                 KeyboardButton(text="\U0001F4BB JavaScript"),
+                 KeyboardButton(text="\U0001F4BC Java")],
+                [KeyboardButton(text="\U0001F4BB C++"), KeyboardButton(text="\U0001F537 C#"),
+                 KeyboardButton(text="\U0001F4BC GO")],
+                [KeyboardButton(text="\U0001F4D8 TypeScript"), KeyboardButton(text="\U0001F4D3 Kotlin"),
+                 KeyboardButton(text="\U0001F4D6 PHP")],
+                [KeyboardButton(text="\U0001F4C3 Bot haqida ma'lumot")]
             ],
             resize_keyboard=True,
             one_time_keyboard=True
@@ -110,32 +110,32 @@ async def test_command(message: Message):
 
 @dp.message()
 async def choose_test_type(message: Message):
-    global current_test, soni, test_data, t_javob
+    global current_test, soni, test_data, t_javob, test_count, azoligi
     soni = 0  # Har bir yangi test boshlanganda savollarni boshidan boshlash
 
     if azoligi == True:
-        if message.text in ["\\U0001F40D Python", "\\U0001F4BB JavaScript", "\\U0001F4BC Java", "\\U0001F4BB C++",
-                            "\\U0001F537 C#", "\\U0001F4BC GO", "\\U0001F4D8 TypeScript", "\\U0001F4D3 Kotlin",
-                            "\\U0001F4D6 PHP"]:
+        if message.text in ["\U0001F40D Python", "\U0001F4BB JavaScript", "\U0001F4BC Java", "\U0001F4BB C++",
+                            "\U0001F537 C#", "\U0001F4BC GO", "\U0001F4D8 TypeScript", "\U0001F4D3 Kotlin",
+                            "\U0001F4D6 PHP"]:
 
             current_test = None
-            if message.text == "\\U0001F40D Python":
+            if message.text == "\U0001F40D Python":
                 current_test = "python"
-            elif message.text == "\\U0001F4BB JavaScript":
+            elif message.text == "\U0001F4BB JavaScript":
                 current_test = "java_script"
-            elif message.text == "\\U0001F4BC Java":
+            elif message.text == "\U0001F4BC Java":
                 current_test = "java"
-            elif message.text == "\\U0001F4BB C++":
+            elif message.text == "\U0001F4BB C++":
                 current_test = "c_plyus"
-            elif message.text == "\\U0001F537 C#":
+            elif message.text == "\U0001F537 C#":
                 current_test = "c_sharp"
-            elif message.text == "\\U0001F4BC GO":
+            elif message.text == "\U0001F4BC GO":
                 current_test = "go"
-            elif message.text == "\\U0001F4D8 TypeScript":
+            elif message.text == "\U0001F4D8 TypeScript":
                 current_test = "typescript"
-            elif message.text == "\\U0001F4D3 Kotlin":
+            elif message.text == "\U0001F4D3 Kotlin":
                 current_test = "kotlin"
-            elif message.text == "\\U0001F4D6 PHP":
+            elif message.text == "\U0001F4D6 PHP":
                 current_test = "php"
             soni = 0
             tanlangan_javoblar.clear()
@@ -147,7 +147,10 @@ async def choose_test_type(message: Message):
             ])
             await message.answer(f"{message.from_user.first_name} dasturlash tilidagi testlar sonini tanlang:",
                                  reply_markup=test_count_keyboard)
-        elif message.text == "\\U0001F4C3 Bot haqida ma'lumot":
+            soni = 0
+            tanlangan_javoblar.clear()
+            test_count = 0
+        elif message.text == "\U0001F4C3 Bot haqida ma'lumot":
             await info(message)
         else:
             await message.answer("Tanlangan dasturlash tilini tanlashda xatolik yuz berdi. Iltimos, qayta tanlang.")
@@ -164,8 +167,9 @@ async def choose_test_type(message: Message):
 @dp.callback_query(lambda c: c.data in ["10_tests", "20_tests", "30_tests"])
 async def choose_test_count(callback_query: CallbackQuery):
     global current_test, test_data, test_count, soni
-    test_count = 10  # Default test soni
-    if callback_query.data == "20_tests":
+    if callback_query.data == "10_tests":
+        test_count = 10  # Default test soni
+    elif callback_query.data == "20_tests":
         test_count = 20
     elif callback_query.data == "30_tests":
         test_count = 30
@@ -291,16 +295,16 @@ async def testni_yakunlash(callback_query: CallbackQuery):
     natija = []
     for i in range(len(togri_javoblar)):
         if tanlangan_javoblar[i] == togri_javoblar[i]:
-            natija.append(f"{i + 1}-savol: \\U00002705 To'g'ri javob")
+            natija.append(f"{i + 1}-savol: \U00002705 To'g'ri javob")
             t_javob += 1
         else:
-            natija.append(f"{i + 1}-savol: \\U0000274C Notog'ri javob. To'g'ri javob: {togri_javoblar[i]}")
+            natija.append(f"{i + 1}-savol: \U0000274C Notog'ri javob. To'g'ri javob: {togri_javoblar[i]}")
 
     response = (f"Test yakunlandi. {callback_query.from_user.first_name}\n{test_count} ta testdan natijangiz:\n\n"
                 "Quyidagi natijalar:\n\n"
                 f"{'\n'.join(natija)}\n\n"
-                f"\U00002705 {t_javob} ta testga to'g'ri javob berdingiz. \U0001F44D\n\n"  
-                f"\U0000274C {test_count - t_javob} ta testga notog'ri javob berdingiz. \U0001F614\n\n")
+                f"\U00002705 {t_javob} ta testga to'g'ri javob berdingiz. \U0001F44D\n\n"  # ✅ 👍
+                f"\U0000274C {test_count - t_javob} ta testga notog'ri javob berdingiz. \U0001F614")  # ❌ 😒
 
     finish_keyboard = InlineKeyboardBuilder()
     finish_keyboard.button(text="Testni qaytadan boshlash", callback_data="testni_qayta_yuklash")
@@ -318,14 +322,14 @@ async def test_qaytadan(callback_query: CallbackQuery):
         # Inline tugmalarni yaratish
         keyboard = ReplyKeyboardMarkup(
             keyboard=[
-                [KeyboardButton(text="\\U0001F40D Python"),
-                 KeyboardButton(text="\\U0001F4BB JavaScript"),
-                 KeyboardButton(text="\\U0001F4BC Java")],
-                [KeyboardButton(text="\\U0001F4BB C++"), KeyboardButton(text="\\U0001F537 C#"),
-                 KeyboardButton(text="\\U0001F4BC GO")],
-                [KeyboardButton(text="\\U0001F4D8 TypeScript"), KeyboardButton(text="\\U0001F4D3 Kotlin"),
-                 KeyboardButton(text="\\U0001F4D6 PHP")],
-                [KeyboardButton(text="\\U0001F4C3 Bot haqida ma'lumot")]
+                [KeyboardButton(text="\U0001F40D Python"),
+                 KeyboardButton(text="\U0001F4BB JavaScript"),
+                 KeyboardButton(text="\U0001F4BC Java")],
+                [KeyboardButton(text="\U0001F4BB C++"), KeyboardButton(text="\U0001F537 C#"),
+                 KeyboardButton(text="\U0001F4BC GO")],
+                [KeyboardButton(text="\U0001F4D8 TypeScript"), KeyboardButton(text="\U0001F4D3 Kotlin"),
+                 KeyboardButton(text="\U0001F4D6 PHP")],
+                [KeyboardButton(text="\U0001F4C3 Bot haqida ma'lumot")]
             ],
             resize_keyboard=True,
             one_time_keyboard=True
@@ -367,7 +371,7 @@ async def info(message: Message):
     📩 **Savollaringiz bo'lsa, biz bilan bog'laning!**
      Test ishlash uchun ** /test ** buyruqini yuboring
     """
-    if message.text == "\\U0001F4C3 Bot haqida ma'lumot":
+    if message.text == "\U0001F4C3 Bot haqida ma'lumot":
         await message.answer(info_message)
     else:
         await message.reply(info_message)
