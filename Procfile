@@ -1,1 +1,1 @@
-worker: python main.py
+worker: python  Test_bot/main.py
