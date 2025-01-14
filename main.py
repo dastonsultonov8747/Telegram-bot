@@ -1,12 +1,12 @@
-import executor
+import asyncio
+
 from aiogram import Bot, Dispatcher
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import Command
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-from aiogram.types import ReplyKeyboardMarkup, ReplyKeyboardRemove, KeyboardButton
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from baza import *
 import os
-from flask import Flask, request
 
 # Bot tokeni
 BOT_TOKEN = os.getenv("BOT_TOKEN")
@@ -26,25 +26,6 @@ azoligi = False
 test_count = 0
 Foydalanuvchi = []
 t_javob = 0
-
-app = Flask(__name__)
-
-
-@app.route('/webhook', methods=['POST'])
-def webhook():
-    update = request.get_json()
-    dp.process_update(update)  # Aiogram update'ni qabul qilish
-    return 'OK', 200
-
-
-# Webhookni o‘rnatish
-async def on_startup(dp):
-    await bot.set_webhook(WEBHOOK_URL)
-
-
-# Botning shutdown qismi
-async def on_shutdown(dp):
-    await bot.delete_webhook()
 
 
 @dp.message(Command(commands=["start"]))
@@ -394,12 +375,4 @@ async def info(message: Message):
 
 
 if __name__ == '__main__':
-    start_webhook(
-        dispatcher=dp,
-        webhook_path='/webhook',
-        skip_updates=True,
-        on_startup=on_startup,
-        on_shutdown=on_shutdown,
-        host='0.0.0.0',
-        port=5000  # Flask porti
-    )
+    asyncio.run(dp.start_polling(bot))
