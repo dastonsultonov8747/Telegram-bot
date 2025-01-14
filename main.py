@@ -1,4 +1,5 @@
 import asyncio
+from datetime import datetime
 
 from aiogram import Bot, Dispatcher
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
@@ -37,11 +38,18 @@ async def Kanalga_qoshish(message: Message):
         [InlineKeyboardButton(text="A'zolikni Tekshirish", callback_data="kanalga_azoligi")]
     ])
     user_id = message.from_user.id
-    kanalga_qoshilganligi = await bot.get_chat_member("@daston_sultonov", user_id)
-    if kanalga_qoshilganligi.status in ["member", "administrator", "creator"]:
-        azoligi = True
-    else:
+
+    try:
+        kanalga_qoshilganligi = await bot.get_chat_member(f"@{CHANNEL_ID}", user_id)
+        print(f"User {user_id} status in channel: {kanalga_qoshilganligi.status}")  # Debugging line
+
+        if kanalga_qoshilganligi.status in ["member", "administrator", "creator"]:
+            azoligi = True
+        else:
+            azoligi = False
+    except Exception as e:
         azoligi = False
+        print(f"Error checking membership: {e}")
 
     await message.answer(response, reply_markup=kanal_button)
 
@@ -69,15 +77,15 @@ async def check_membership(callback_query: CallbackQuery):
 
             response = f"Assalomu alaykum {callback_query.message.from_user.first_name}\n\n! Botga xush kelibsiz! O'zingiz bilgan dasturlash tilini tanlang. "
             await callback_query.message.answer(response, reply_markup=keyboard)
-            # ismi = callback_query.from_user.first_name
-            # familiasi = callback_query.from_user.last_name
-            # username = callback_query.from_user.username
-            # azo_bolgan_vaqti = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            #
-            # Foydalanuvchi.append(
-            #     f"ismi: {ismi}\nfamiliasi: {familiasi}\nusername: {username}\nazo_bolgan_vaqti: {azo_bolgan_vaqti}")
-            #
-            # print(Foydalanuvchi)
+            ismi = callback_query.from_user.first_name
+            familiasi = callback_query.from_user.last_name
+            username = callback_query.from_user.username
+            azo_bolgan_vaqti = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+            Foydalanuvchi.append(
+                f"ismi: {ismi}\nfamiliasi: {familiasi}\nusername: {username}\nazo_bolgan_vaqti: {azo_bolgan_vaqti}")
+
+            print(Foydalanuvchi)
         else:
             await callback_query.answer("Siz kanalga a'zo bo'lmagansiz. Iltimos, quyidagi kanalga a'zo bo'ling.")
     except Exception as e:
@@ -241,7 +249,6 @@ async def javoblarni_olish(callback_query: CallbackQuery):
 
     # Savolni keyingisi bilan yangilash
     soni += 1
-
     if soni < len(test_data):  # Savol soni test uzunligidan oshmasligi kerak
         row = test_data[soni]
         savol = f"{soni + 1}. {row[1]}"
@@ -372,7 +379,7 @@ async def info(message: Message):
     📩 **Savollaringiz bo'lsa, biz bilan bog'laning!**
      Test ishlash uchun ** /test ** buyruqini yuboring
     """
-    if message.text == "\U0001F4C3 Bot haqida ma'lumot":
+    if message.text == " 📃 Bot haqida ma'lumot":
         await message.answer(info_message)
     else:
         await message.reply(info_message)
