@@ -1,17 +1,17 @@
+import executor
 from aiogram import Bot, Dispatcher
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import Command
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import ReplyKeyboardMarkup, ReplyKeyboardRemove, KeyboardButton
-import asyncio
 from baza import *
 import os
-from flask import Flask
+from flask import Flask, request
 
 # Bot tokeni
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHANNEL_ID = os.getenv("CHANNEL_ID")
-app = Flask(__name__)
+WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 
 # Bot va Dispatcher obyektlarini yaratish
 bot = Bot(token=BOT_TOKEN)
@@ -27,10 +27,24 @@ test_count = 0
 Foydalanuvchi = []
 t_javob = 0
 
+app = Flask(__name__)
 
-@app.route("/")
-def home():
-    return "Hello, Render!"
+
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    update = request.get_json()
+    dp.process_update(update)  # Aiogram update'ni qabul qilish
+    return 'OK', 200
+
+
+# Webhookni o‘rnatish
+async def on_startup(dp):
+    await bot.set_webhook(WEBHOOK_URL)
+
+
+# Botning shutdown qismi
+async def on_shutdown(dp):
+    await bot.delete_webhook()
 
 
 @dp.message(Command(commands=["start"]))
@@ -301,10 +315,10 @@ async def testni_yakunlash(callback_query: CallbackQuery):
     natija = []
     for i in range(len(togri_javoblar)):
         if tanlangan_javoblar[i] == togri_javoblar[i]:
-            natija.append(f"{i + 1}-savol: ✅ To'g'ri javob")  # ✅ emoji
+            natija.append(f"{i + 1}-savol: ✅ To'g'ri javob")
             t_javob += 1
         else:
-            natija.append(f"{i + 1}-savol: ❌ Notog'ri javob. To'g'ri javob: {togri_javoblar[i]}")  # ❌ emoji
+            natija.append(f"{i + 1}-savol: ❌ Notog'ri javob. To'g'ri javob: {togri_javoblar[i]}")
 
     response = "\n".join(natija)
 
@@ -312,10 +326,7 @@ async def testni_yakunlash(callback_query: CallbackQuery):
     finish_keyboard.button(text="Testni qaytadan boshlash", callback_data="testni_qayta_yuklash")
     finish_keyboard.adjust(1)
     await callback_query.message.answer(response, reply_markup=finish_keyboard.as_markup())
-
-    # Variable 'soni' to 0, if needed later
     soni = 0
-
     tanlangan_javoblar.clear()
     t_javob = 0
 
@@ -382,7 +393,13 @@ async def info(message: Message):
         await message.reply(info_message)
 
 
-if __name__ == "__main__":
-    port = int(os.getenv("PORT", 5000))  # Default port: 5000
-    app.run(host="0.0.0.0", port=port)
-    asyncio.run(dp.start_polling(bot))
+if __name__ == '__main__':
+    start_webhook(
+        dispatcher=dp,
+        webhook_path='/webhook',
+        skip_updates=True,
+        on_startup=on_startup,
+        on_shutdown=on_shutdown,
+        host='0.0.0.0',
+        port=5000  # Flask porti
+    )
