@@ -40,6 +40,7 @@ async def Kanalga_qoshish(message: Message):
     user_id = message.from_user.id
 
     try:
+        print(f"Checking membership for user {user_id}")
         kanalga_qoshilganligi = await bot.get_chat_member(f"@{CHANNEL_ID}", user_id)
         print(f"User {user_id} status in channel: {kanalga_qoshilganligi.status}")  # Debugging line
 
@@ -56,7 +57,7 @@ async def Kanalga_qoshish(message: Message):
 
 @dp.callback_query(lambda c: c.data == "kanalga_azoligi")
 async def check_membership(callback_query: CallbackQuery):
-    global azoligi
+    global azoligi, soni, tanlangan_javoblar
     try:
         if azoligi == True:
 
@@ -81,13 +82,17 @@ async def check_membership(callback_query: CallbackQuery):
             familiasi = callback_query.from_user.last_name
             username = callback_query.from_user.username
             azo_bolgan_vaqti = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            soni = 0
+            tanlangan_javoblar = []
 
             Foydalanuvchi.append(
                 f"ismi: {ismi}\nfamiliasi: {familiasi}\nusername: {username}\nazo_bolgan_vaqti: {azo_bolgan_vaqti}")
 
             print(Foydalanuvchi)
+
         else:
-            await callback_query.answer("Siz kanalga a'zo bo'lmagansiz. Iltimos, quyidagi kanalga a'zo bo'ling.")
+            response = "Siz kanalga a'zo bo'lmagansiz. Iltimos, kanalga qo'shiling va qaytadan sinab ko'ring."
+            await callback_query.answer(response)
     except Exception as e:
         await callback_query.answer(
             f"Xatolik yuz berdi: {str(e)}. Iltimos, bir necha daqiqadan keyin qayta urinib ko'ring.")
@@ -95,7 +100,7 @@ async def check_membership(callback_query: CallbackQuery):
 
 @dp.message(Command(commands=["test"]))
 async def test_command(message: Message):
-    global azoligi
+    global azoligi, soni, tanlangan_javoblar
     if azoligi == True:
         keyboard = ReplyKeyboardMarkup(
             keyboard=[
@@ -111,14 +116,30 @@ async def test_command(message: Message):
             resize_keyboard=True,
             one_time_keyboard=True
         )
-        response = f"Assalomu alaykum {message.from_user.first_name}! Botimizga xush kelibsiz! Quyidagi menyudan tanlang:"
+        response = f"Assalomu alaykum {message.from_user.first_name} {message.from_user.last_name}! Botimizga xush kelibsiz! Quyidagi menyudan tanlang:"
+        soni = 0
+        tanlangan_javoblar = []
         await message.answer(response, reply_markup=keyboard)
     else:
-        response = "Siz kanalga a'zo bo'lmagansiz. Iltimos, kanalga qo'shiling va qaytadan sinab ko'ring."
+        response = ("Botdan foydalanish uchun oldin quyidagi kanalga a'zo bo'lishingiz kerak.\n\n")
         kanal_button = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text='Kanal havolasi', url=f"https://t.me/{CHANNEL_ID}")],
             [InlineKeyboardButton(text="A'zolikni Tekshirish", callback_data="kanalga_azoligi")]
         ])
+        user_id = message.from_user.id
+
+        try:
+            print(f"Checking membership for user {user_id}")
+            kanalga_qoshilganligi = await bot.get_chat_member(f"@{CHANNEL_ID}", user_id)
+            print(f"User {user_id} status in channel: {kanalga_qoshilganligi.status}")  # Debugging line
+
+            if kanalga_qoshilganligi.status in ["member", "administrator", "creator"]:
+                azoligi = True
+            else:
+                azoligi = False
+        except Exception as e:
+            azoligi = False
+            print(f"Error checking membership: {e}")
         await message.answer(response, reply_markup=kanal_button)
 
 
@@ -127,7 +148,7 @@ async def choose_test_type(message: Message):
     global current_test, soni, test_data, t_javob, test_count, azoligi
     if azoligi == True:
         if message.text in ["🐍 Python", "💻 JavaScript", "💼 Java", "💻 C++", "🟧 C#", "💼 GO", "📘 TypeScript",
-                            "📓 Kotlin", "📖 PHP", "📃 Bot haqida ma'lumot"]:
+                            "📓 Kotlin", "📖 PHP"]:
 
             current_test = None
             if message.text == "🐍 Python":
@@ -137,13 +158,13 @@ async def choose_test_type(message: Message):
             elif message.text == "💼 Java":
                 current_test = "java"
             elif message.text == "💻 C++":
-                current_test = "c_plyus"
+                current_test = "C_plyus"
             elif message.text == "🟧 C#":
-                current_test = "c_sharp"
+                current_test = "C_sharp"
             elif message.text == "💼 GO":
-                current_test = "go"
+                current_test = "golang"
             elif message.text == "📘 TypeScript":
-                current_test = "typescript"
+                current_test = "type_script"
             elif message.text == "📓 Kotlin":
                 current_test = "kotlin"
             elif message.text == "📖 PHP":
@@ -169,11 +190,25 @@ async def choose_test_type(message: Message):
             response = "Tanlangan dasturlash tilini tanlashda xatolik yuz berdi. Iltimos, qayta tanlang."
             await message.answer(response)
     else:
-        response = "Siz kanalga a'zo bo'lmagansiz. Iltimos, kanalga qo'shiling va qaytadan sinab ko'ring."
+        response = ("Botdan foydalanish uchun oldin quyidagi kanalga a'zo bo'lishingiz kerak.\n\n")
         kanal_button = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text='Kanal havolasi', url=f"https://t.me/{CHANNEL_ID}")],
             [InlineKeyboardButton(text="A'zolikni Tekshirish", callback_data="kanalga_azoligi")]
         ])
+        user_id = message.from_user.id
+
+        try:
+            print(f"Checking membership for user {user_id}")
+            kanalga_qoshilganligi = await bot.get_chat_member(f"@{CHANNEL_ID}", user_id)
+            print(f"User {user_id} status in channel: {kanalga_qoshilganligi.status}")  # Debugging line
+
+            if kanalga_qoshilganligi.status in ["member", "administrator", "creator"]:
+                azoligi = True
+            else:
+                azoligi = False
+        except Exception as e:
+            azoligi = False
+            print(f"Error checking membership: {e}")
         await message.answer(response, reply_markup=kanal_button)
 
 
@@ -312,7 +347,7 @@ async def testni_yakunlash(callback_query: CallbackQuery):
         else:
             natija.append(f"{i + 1}-savol: ❌ Notog'ri javob. To'g'ri javob: {togri_javoblar[i]}")
 
-    response = "\n".join(natija)
+    response = f"{callback_query.from_user.first_name} sizning natijangiz: \n\n" + "\n".join(natija)
 
     finish_keyboard = InlineKeyboardBuilder()
     finish_keyboard.button(text="Testni qaytadan boshlash", callback_data="testni_qayta_yuklash")
@@ -344,7 +379,7 @@ async def test_qaytadan(callback_query: CallbackQuery):
         )
 
         # Javobni yuborish
-        response = f"Assalomu alaykum {callback_query.from_user.first_name}! Botimizga xush kelibsiz! Quyidagi menyudan tanlang:"
+        response = f"Assalomu alaykum {callback_query.from_user.first_name} {callback_query.from_user.last_name}! Botimizga xush kelibsiz! Quyidagi menyudan tanlang:"
         await callback_query.message.answer(response, reply_markup=keyboard)
 
         # Testni qayta yuklash va o'zgaruvchilarni tozalash
