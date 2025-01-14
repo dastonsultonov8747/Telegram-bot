@@ -30,11 +30,18 @@ t_javob = 0
 
 @dp.message(Command(commands=["start"]))
 async def Kanalga_qoshish(message: Message):
+    global azoligi
     response = ("Botdan foydalanish uchun oldin quyidagi kanalga a'zo bo'lishingiz kerak.\n\n")
     kanal_button = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text='Kanal havolasi', url=f"https://t.me/{CHANNEL_ID}")],
         [InlineKeyboardButton(text="A'zolikni Tekshirish", callback_data="kanalga_azoligi")]
     ])
+    user_id = message.from_user.id
+    kanalga_qoshilganligi = await bot.get_chat_member("@daston_sultonov", user_id)
+    if kanalga_qoshilganligi.status in ["member", "administrator", "creator"]:
+        azoligi = True
+    else:
+        azoligi = False
 
     await message.answer(response, reply_markup=kanal_button)
 
@@ -42,11 +49,8 @@ async def Kanalga_qoshish(message: Message):
 @dp.callback_query(lambda c: c.data == "kanalga_azoligi")
 async def check_membership(callback_query: CallbackQuery):
     global azoligi
-    user_id = callback_query.from_user.id
     try:
-        kanalga_qoshilganligi = await bot.get_chat_member("@daston_sultonov", user_id)
-        if kanalga_qoshilganligi.status in ["member", "administrator", "creator"]:
-            azoligi = True
+        if azoligi == True:
 
             keyboard = ReplyKeyboardMarkup(
                 keyboard=[
@@ -150,19 +154,19 @@ async def choose_test_type(message: Message):
             await message.answer(f"{message.from_user.first_name} dasturlash tilidagi testlar sonini tanlang:",
                                  reply_markup=test_count_keyboard)
 
-    elif message.text == "📃 Bot haqida ma'lumot":
-        await info(message)
+        elif message.text == "📃 Bot haqida ma'lumot":
+            await info(message)
 
+        else:
+            response = "Tanlangan dasturlash tilini tanlashda xatolik yuz berdi. Iltimos, qayta tanlang."
+            await message.answer(response)
     else:
-        response = "Tanlangan dasturlash tilini tanlashda xatolik yuz berdi. Iltimos, qayta tanlang."
-        await message.answer(response)
-
-    response = "Siz kanalga a'zo bo'lmagansiz. Iltimos, kanalga qo'shiling va qaytadan sinab ko'ring."
-    kanal_button = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text='Kanal havolasi', url=f"https://t.me/{CHANNEL_ID}")],
-        [InlineKeyboardButton(text="A'zolikni Tekshirish", callback_data="kanalga_azoligi")]
-    ])
-    await message.answer(response, reply_markup=kanal_button)
+        response = "Siz kanalga a'zo bo'lmagansiz. Iltimos, kanalga qo'shiling va qaytadan sinab ko'ring."
+        kanal_button = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text='Kanal havolasi', url=f"https://t.me/{CHANNEL_ID}")],
+            [InlineKeyboardButton(text="A'zolikni Tekshirish", callback_data="kanalga_azoligi")]
+        ])
+        await message.answer(response, reply_markup=kanal_button)
 
 
 @dp.callback_query(lambda c: c.data in ["10_tests", "20_tests", "30_tests"])
