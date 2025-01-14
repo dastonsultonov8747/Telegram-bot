@@ -6,11 +6,12 @@ from aiogram.types import ReplyKeyboardMarkup, ReplyKeyboardRemove, KeyboardButt
 import asyncio
 from baza import *
 import os
-from datetime import datetime
+from flask import Flask
 
 # Bot tokeni
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHANNEL_ID = os.getenv("CHANNEL_ID")
+app = Flask(__name__)
 
 # Bot va Dispatcher obyektlarini yaratish
 bot = Bot(token=BOT_TOKEN)
@@ -25,6 +26,11 @@ azoligi = False
 test_count = 0
 Foydalanuvchi = []
 t_javob = 0
+
+
+@app.route("/")
+def home():
+    return "Hello, Render!"
 
 
 @dp.message(Command(commands=["start"]))
@@ -377,4 +383,6 @@ async def info(message: Message):
 
 
 if __name__ == "__main__":
+    port = int(os.getenv("PORT", 5000))  # Default port: 5000
+    app.run(host="0.0.0.0", port=port)
     asyncio.run(dp.start_polling(bot))
