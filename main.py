@@ -440,15 +440,16 @@ async def info(message: Message):
 # if __name__ == "__main__":
 #     uvicorn.run("main:main", host="0.0.0.0", port=8000)
 #
-# if __name__ == "__main__":
-#     print("Bot ishga tushirilmoqda...")
-#     asyncio.run(dp.start_polling(bot))
-# Asosiy ishga tushirish uchun asinxron funksiya
-async def main():
-    logging.basicConfig(level=logging.INFO)
-    await dp.start_polling()
 
-
-# Uvicorn serverini ishga tushirish
 if __name__ == "__main__":
-    uvicorn.run("main:main", host="0.0.0.0", port=8000)
+    print("Bot ishga tushirilmoqda...")
+    asyncio.run(dp.start_polling(bot))
+
+# async def main():
+#     logging.basicConfig(level=logging.INFO)
+#     await dp.start_polling()
+#
+#
+# # Uvicorn serverini ishga tushirish
+# if __name__ == "__main__":
+#     uvicorn.run("main:main", host="0.0.0.0", port=8000)
