@@ -1,6 +1,4 @@
-import asyncio
 from datetime import datetime
-
 from aiogram import Bot, Dispatcher
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import Command
@@ -9,11 +7,15 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from baza import *
 import os
 
-# Bot tokeni
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-CHANNEL_ID = os.getenv("CHANNEL_ID")
-WEBHOOK_URL = os.getenv("WEBHOOK_URL")
+# .env fayldan ma'lumotlarni yuklash
+load_dotenv()
 
+# Bot tokeni
+BOT_TOKEN = "8027082464:AAGEsMO64hLMYK0-ptWk6Gi2sL6e-1W3pv0"
+CHANNEL_ID = "daston_sultonov"
+WEBHOOK_URL = os.getenv("WEBHOOK_URL")
+user_id_men = 6866285281
+users = 0
 # Bot va Dispatcher obyektlarini yaratish
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
@@ -57,7 +59,7 @@ async def Kanalga_qoshish(message: Message):
 
 @dp.callback_query(lambda c: c.data == "kanalga_azoligi")
 async def check_membership(callback_query: CallbackQuery):
-    global azoligi, soni, tanlangan_javoblar
+    global azoligi, soni, tanlangan_javoblar, user_id_men, users
     try:
         if azoligi == True:
 
@@ -87,8 +89,13 @@ async def check_membership(callback_query: CallbackQuery):
 
             Foydalanuvchi.append(
                 f"ismi: {ismi}\nfamiliasi: {familiasi}\nusername: {username}\nazo_bolgan_vaqti: {azo_bolgan_vaqti}")
-
-            print(Foydalanuvchi)
+            if len(Foydalanuvchi) > users:
+                users = len(Foydalanuvchi)
+                try:
+                    await bot.send_message(chat_id=user_id_men, text=f"Mana sizning ro'yxatingiz:\n{Foydalanuvchi}")
+                    print("Xabar muvaffaqiyatli yuborildi!")
+                except Exception as e:
+                    print(f"Xabar yuborishda xatolik yuz berdi: {str(e)}")
 
         else:
             response = "Siz kanalga a'zo bo'lmagansiz. Iltimos, kanalga qo'shiling va qaytadan sinab ko'ring."
@@ -96,6 +103,7 @@ async def check_membership(callback_query: CallbackQuery):
     except Exception as e:
         await callback_query.answer(
             f"Xatolik yuz berdi: {str(e)}. Iltimos, bir necha daqiqadan keyin qayta urinib ko'ring.")
+
 
 #
 # @dp.message(Command(commands=["test"]))
@@ -420,5 +428,7 @@ async def info(message: Message):
         await message.reply(info_message)
 
 
-if __name__ == '__main__':
-    asyncio.run(dp.start_polling(bot))
+if __name__ == "__main__":
+    from aiogram import executor
+
+    executor.start_polling(dp, skip_updates=True)
