@@ -1,4 +1,7 @@
+import asyncio
 from datetime import datetime
+
+import uvicorn
 from aiogram import Bot, Dispatcher
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import Command
@@ -11,9 +14,8 @@ import os
 load_dotenv()
 
 # Bot tokeni
-BOT_TOKEN = "8027082464:AAGEsMO64hLMYK0-ptWk6Gi2sL6e-1W3pv0"
-CHANNEL_ID = "daston_sultonov"
-WEBHOOK_URL = os.getenv("WEBHOOK_URL")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+CHANNEL_ID = os.getenv("CHANNEL_ID")
 user_id_men = 6866285281
 users = 0
 # Bot va Dispatcher obyektlarini yaratish
@@ -92,7 +94,8 @@ async def check_membership(callback_query: CallbackQuery):
             if len(Foydalanuvchi) > users:
                 users = len(Foydalanuvchi)
                 try:
-                    await bot.send_message(chat_id=user_id_men, text=f"Mana sizning ro'yxatingiz:\n{Foydalanuvchi}")
+                    await bot.send_message(chat_id=user_id_men,
+                                           text=f"Botda yangi foydalanuvchilar mavjud:\n{Foydalanuvchi}")
                     print("Xabar muvaffaqiyatli yuborildi!")
                 except Exception as e:
                     print(f"Xabar yuborishda xatolik yuz berdi: {str(e)}")
@@ -355,7 +358,7 @@ async def testni_yakunlash(callback_query: CallbackQuery):
         else:
             natija.append(f"{i + 1}-savol: ❌ Notog'ri javob. To'g'ri javob: {togri_javoblar[i]}")
 
-    response = f"{callback_query.from_user.first_name} sizning natijangiz: \n\n" + "\n".join(natija)
+    response = f"{callback_query.from_user.first_name} sizning natijangiz: \n\n" + "\n\n".join(natija)
 
     finish_keyboard = InlineKeyboardBuilder()
     finish_keyboard.button(text="Testni qaytadan boshlash", callback_data="testni_qayta_yuklash")
@@ -427,8 +430,14 @@ async def info(message: Message):
     else:
         await message.reply(info_message)
 
+async def main():
+    print("Bot ishga tushirilmoqda...")
+    await dp.start_polling()
 
 if __name__ == "__main__":
-    from aiogram import executor
+    uvicorn.run(main())
 
-    executor.start_polling(dp, skip_updates=True)
+
+# if __name__ == "__main__":
+#     print("Bot ishga tushirilmoqda...")
+#     asyncio.run(dp.start_polling(bot))
