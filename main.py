@@ -108,50 +108,50 @@ async def check_membership(callback_query: CallbackQuery):
             f"Xatolik yuz berdi: {str(e)}. Iltimos, bir necha daqiqadan keyin qayta urinib ko'ring.")
 
 
-#
-# @dp.message(Command(commands=["test"]))
-# async def test_command(message: Message):
-#     global azoligi, soni, tanlangan_javoblar
-#     if azoligi == True:
-#         keyboard = ReplyKeyboardMarkup(
-#             keyboard=[
-#                 [KeyboardButton(text="🐍 Python"),
-#                  KeyboardButton(text="💻 JavaScript"),
-#                  KeyboardButton(text="💼 Java")],
-#                 [KeyboardButton(text="💻 C++"), KeyboardButton(text="🟧 C#"),
-#                  KeyboardButton(text="💼 GO")],
-#                 [KeyboardButton(text="📘 TypeScript"), KeyboardButton(text="📓 Kotlin"),
-#                  KeyboardButton(text="📖 PHP")],
-#                 [KeyboardButton(text="📃 Bot haqida ma'lumot")]
-#             ],
-#             resize_keyboard=True,
-#             one_time_keyboard=True
-#         )
-#         response = f"Assalomu alaykum {message.from_user.first_name} {message.from_user.last_name}! Botimizga xush kelibsiz! Quyidagi menyudan tanlang:"
-#         soni = 0
-#         tanlangan_javoblar = []
-#         await message.answer(response, reply_markup=keyboard)
-#     else:
-#         response = ("Botdan foydalanish uchun oldin quyidagi kanalga a'zo bo'lishingiz kerak.\n\n")
-#         kanal_button = InlineKeyboardMarkup(inline_keyboard=[
-#             [InlineKeyboardButton(text='Kanal havolasi', url=f"https://t.me/{CHANNEL_ID}")],
-#             [InlineKeyboardButton(text="A'zolikni Tekshirish", callback_data="kanalga_azoligi")]
-#         ])
-#         user_id = message.from_user.id
-#
-#         try:
-#             print(f"Checking membership for user {user_id}")
-#             kanalga_qoshilganligi = await bot.get_chat_member(f"@{CHANNEL_ID}", user_id)
-#             print(f"User {user_id} status in channel: {kanalga_qoshilganligi.status}")  # Debugging line
-#
-#             if kanalga_qoshilganligi.status in ["member", "administrator", "creator"]:
-#                 azoligi = True
-#             else:
-#                 azoligi = False
-#         except Exception as e:
-#             azoligi = False
-#             print(f"Error checking membership: {e}")
-#         await message.answer(response, reply_markup=kanal_button)
+
+@dp.message(Command(commands=["test"]))
+async def test_command(message: Message):
+    global azoligi, soni, tanlangan_javoblar
+    if azoligi == True:
+        keyboard = ReplyKeyboardMarkup(
+            keyboard=[
+                [KeyboardButton(text="🐍 Python"),
+                 KeyboardButton(text="💻 JavaScript"),
+                 KeyboardButton(text="💼 Java")],
+                [KeyboardButton(text="💻 C++"), KeyboardButton(text="🟧 C#"),
+                 KeyboardButton(text="💼 GO")],
+                [KeyboardButton(text="📘 TypeScript"), KeyboardButton(text="📓 Kotlin"),
+                 KeyboardButton(text="📖 PHP")],
+                [KeyboardButton(text="📃 Bot haqida ma'lumot")]
+            ],
+            resize_keyboard=True,
+            one_time_keyboard=True
+        )
+        response = f"Assalomu alaykum {message.from_user.first_name} {message.from_user.last_name}! Botimizga xush kelibsiz! Quyidagi menyudan tanlang:"
+        soni = 0
+        tanlangan_javoblar = []
+        await message.answer(response, reply_markup=keyboard)
+    else:
+        response = ("Botdan foydalanish uchun oldin quyidagi kanalga a'zo bo'lishingiz kerak.\n\n")
+        kanal_button = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text='Kanal havolasi', url=f"https://t.me/{CHANNEL_ID}")],
+            [InlineKeyboardButton(text="A'zolikni Tekshirish", callback_data="kanalga_azoligi")]
+        ])
+        user_id = message.from_user.id
+
+        try:
+            print(f"Checking membership for user {user_id}")
+            kanalga_qoshilganligi = await bot.get_chat_member(f"@{CHANNEL_ID}", user_id)
+            print(f"User {user_id} status in channel: {kanalga_qoshilganligi.status}")  # Debugging line
+
+            if kanalga_qoshilganligi.status in ["member", "administrator", "creator"]:
+                azoligi = True
+            else:
+                azoligi = False
+        except Exception as e:
+            azoligi = False
+            print(f"Error checking membership: {e}")
+        await message.answer(response, reply_markup=kanal_button)
 
 
 @dp.message()
@@ -439,7 +439,10 @@ async def info(message: Message):
 #
 # if __name__ == "__main__":
 #     uvicorn.run("main:main", host="0.0.0.0", port=8000)
-
+#
+# if __name__ == "__main__":
+#     print("Bot ishga tushirilmoqda...")
+#     asyncio.run(dp.start_polling(bot))
 if __name__ == "__main__":
-    print("Bot ishga tushirilmoqda...")
-    asyncio.run(dp.start_polling(bot))
+    port = int(os.environ.get("PORT", 8000))  # Render.com tomonidan berilgan portni olish
+    uvicorn.run("main:main", host="0.0.0.0", port=port)
