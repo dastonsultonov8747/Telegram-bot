@@ -431,10 +431,14 @@ async def info(message: Message):
         await message.reply(info_message)
 
 
-if __name__ == "__main__":
+# Asosiy ishga tushirish uchun asinxron funksiya
+async def main():
     logging.basicConfig(level=logging.INFO)
-    uvicorn.run("main:dp.start_polling", host="0.0.0.0", port=8000)
+    asyncio.run(dp.start_polling(bot))
 
+
+if __name__ == "__main__":
+    uvicorn.run("main:main", host="0.0.0.0", port=8000)
 
 # if __name__ == "__main__":
 #     print("Bot ishga tushirilmoqda...")
