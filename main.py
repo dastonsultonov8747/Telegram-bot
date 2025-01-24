@@ -95,7 +95,7 @@ async def check_membership(callback_query: CallbackQuery):
                 users = len(Foydalanuvchi)
                 try:
                     await bot.send_message(chat_id=user_id_men,
-                                           text=f"Botda yangi foydalanuvchilar mavjud:\n{Foydalanuvchi}")
+                                           text=f"Foydalanuvchilar soni: {len(Foydalanuvchi)}\n\nBotda yangi foydalanuvchilar mavjud:\n{"\n".join(Foydalanuvchi)}")
                     print("Xabar muvaffaqiyatli yuborildi!")
                 except Exception as e:
                     print(f"Xabar yuborishda xatolik yuz berdi: {str(e)}")
@@ -106,7 +106,6 @@ async def check_membership(callback_query: CallbackQuery):
     except Exception as e:
         await callback_query.answer(
             f"Xatolik yuz berdi: {str(e)}. Iltimos, bir necha daqiqadan keyin qayta urinib ko'ring.")
-
 
 
 @dp.message(Command(commands=["test"]))
@@ -430,6 +429,7 @@ async def info(message: Message):
     else:
         await message.reply(info_message)
 
+
 #
 # # Asosiy ishga tushirish uchun asinxron funksiya
 # async def main():
@@ -443,6 +443,11 @@ async def info(message: Message):
 # if __name__ == "__main__":
 #     print("Bot ishga tushirilmoqda...")
 #     asyncio.run(dp.start_polling(bot))
+# Asosiy ishga tushirish uchun asinxron funksiya
+async def main():
+    logging.basicConfig(level=logging.INFO)
+    await dp.start_polling()
+
+# Uvicorn serverini ishga tushirish
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))  # Render.com tomonidan berilgan portni olish
-    uvicorn.run("main:main", host="0.0.0.0", port=port)
+    uvicorn.run("main:main", host="0.0.0.0", port=8000)
