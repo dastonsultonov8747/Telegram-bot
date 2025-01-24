@@ -64,7 +64,7 @@ async def check_membership(callback_query: CallbackQuery):
     global azoligi, soni, tanlangan_javoblar, user_id_men, users
     try:
         if azoligi == True:
-
+            # Yangi interfeys uchun tugmalar
             keyboard = ReplyKeyboardMarkup(
                 keyboard=[
                     [KeyboardButton(text="🐍 Python"),
@@ -80,8 +80,13 @@ async def check_membership(callback_query: CallbackQuery):
                 one_time_keyboard=True
             )
 
-            response = f"Assalomu alaykum {callback_query.message.from_user.first_name}\n\n! Botga xush kelibsiz! O'zingiz bilgan dasturlash tilini tanlang. "
+            # Foydalanuvchiga xush kelibsiz xabari
+            response = f"Assalomu alaykum, {callback_query.message.from_user.first_name}!\n\nBotga xush kelibsiz! O'zingiz bilgan dasturlash tilini tanlang."
+
+            # Botdan foydalanuvchiga xabar yuborish
             await callback_query.message.answer(response, reply_markup=keyboard)
+
+            # Foydalanuvchining ma'lumotlari
             ismi = callback_query.from_user.first_name
             familiasi = callback_query.from_user.last_name
             username = callback_query.from_user.username
@@ -89,21 +94,31 @@ async def check_membership(callback_query: CallbackQuery):
             soni = 0
             tanlangan_javoblar = []
 
+            # Foydalanuvchining ma'lumotlarini ro'yxatga qo'shish
             Foydalanuvchi.append(
-                f"ismi: {ismi}\nfamiliasi: {familiasi}\nusername: {username}\nazo_bolgan_vaqti: {azo_bolgan_vaqti}")
+                f"ismi: {ismi}\nfamiliasi: {familiasi}\nusername: {username}\nazo_bolgan_vaqti: {azo_bolgan_vaqti}"
+            )
+
+            # Foydalanuvchilar ro'yxatini yangilash
             if len(Foydalanuvchi) > users:
                 users = len(Foydalanuvchi)
                 try:
-                    await bot.send_message(chat_id=user_id_men,
-                                           text=f"Foydalanuvchilar soni: {len(Foydalanuvchi)}\n\nBotda yangi foydalanuvchilar mavjud:\n{"\n".join(Foydalanuvchi)}")
+                    # Admin foydalanuvchisiga yangi foydalanuvchilar haqida xabar yuborish
+                    await bot.send_message(
+                        chat_id=user_id_men,
+                        text=f"Foydalanuvchilar soni: {len(Foydalanuvchi)}\n\nBotda yangi foydalanuvchilar mavjud:\n{' \n'.join(Foydalanuvchi)}"
+                    )
                     print("Xabar muvaffaqiyatli yuborildi!")
                 except Exception as e:
                     print(f"Xabar yuborishda xatolik yuz berdi: {str(e)}")
 
         else:
+            # Agar kanalga a'zo bo'lmagan foydalanuvchiga xabar yuborish
             response = "Siz kanalga a'zo bo'lmagansiz. Iltimos, kanalga qo'shiling va qaytadan sinab ko'ring."
             await callback_query.answer(response)
+
     except Exception as e:
+        # Xatolik yuz bersa foydalanuvchiga xabar yuborish
         await callback_query.answer(
             f"Xatolik yuz berdi: {str(e)}. Iltimos, bir necha daqiqadan keyin qayta urinib ko'ring.")
 
@@ -447,6 +462,7 @@ async def info(message: Message):
 async def main():
     logging.basicConfig(level=logging.INFO)
     await dp.start_polling()
+
 
 # Uvicorn serverini ishga tushirish
 if __name__ == "__main__":
