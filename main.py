@@ -1,6 +1,6 @@
 import asyncio
 from datetime import datetime
-
+import logging
 import uvicorn
 from aiogram import Bot, Dispatcher
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
@@ -430,12 +430,10 @@ async def info(message: Message):
     else:
         await message.reply(info_message)
 
-async def main():
-    print("Bot ishga tushirilmoqda...")
-    await dp.start_polling()
 
 if __name__ == "__main__":
-    uvicorn.run(main())
+    logging.basicConfig(level=logging.INFO)
+    uvicorn.run("main:dp.start_polling", host="0.0.0.0", port=8000)
 
 
 # if __name__ == "__main__":
