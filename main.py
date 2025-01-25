@@ -9,18 +9,6 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from baza import *
 import os
-from fastapi import FastAPI
-
-async def create_app():
-    app = FastAPI()
-
-    @app.get("/")
-    async def read_root():
-        return {"message": "Hello, World!"}
-
-    return app
-
-app = create_app()  # This will create a coroutine object
 
 # .env fayldan ma'lumotlarni yuklash
 load_dotenv()
@@ -452,15 +440,6 @@ async def info(message: Message):
 # if __name__ == "__main__":
 #     uvicorn.run("main:main", host="0.0.0.0", port=8000)
 #
-# if __name__ == "__main__":
-#     print("Bot ishga tushirilmoqda...")
-#     asyncio.run(dp.start_polling(bot))
-# Asosiy ishga tushirish uchun asinxron funksiya
-async def main():
-    logging.basicConfig(level=logging.INFO)
-    await dp.start_polling()
-
-
-# Uvicorn serverini ishga tushirish
 if __name__ == "__main__":
-    uvicorn.run("main:main", host="0.0.0.0", port=8000)
+    print("Bot ishga tushirilmoqda...")
+    asyncio.run(dp.start_polling(bot))
