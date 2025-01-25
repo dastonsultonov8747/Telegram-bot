@@ -11,13 +11,16 @@ from baza import *
 import os
 from fastapi import FastAPI
 
-app = FastAPI()
+async def create_app():
+    app = FastAPI()
 
+    @app.get("/")
+    async def read_root():
+        return {"message": "Hello, World!"}
 
-@app.get("/")
-async def read_root():
-    return {"message": "Hello World"}
+    return app
 
+app = create_app()  # This will create a coroutine object
 
 # .env fayldan ma'lumotlarni yuklash
 load_dotenv()
