@@ -351,11 +351,20 @@ async def testni_yakunlash(callback_query: CallbackQuery):
     # Natijani hisoblash
     natija = []
     for i in range(len(togri_javoblar)):
+        rtm = ''
+        if tanlangan_javoblar[i] == 'a':
+            rtm = tanlangan_javoblar[1]
+        elif tanlangan_javoblar[i] == 'b':
+            rtm = tanlangan_javoblar[2]
+        elif tanlangan_javoblar[i] == 'c':
+            rtm = tanlangan_javoblar[3]
         if tanlangan_javoblar[i] == togri_javoblar[i]:
-            natija.append(f"{i + 1}-savol: ✅ To'g'ri javob\n{togri_javoblar[i]}")
-            t_javob += 1
+            natija.append(f"{i + 1}-savol: ✅ To'g'ri javob\n{rtm}")
+            rtm = ''
+
         else:
-            natija.append(f"{i + 1}-savol: ❌ Notog'ri javob. To'g'ri javob: {togri_javoblar[i]}")
+            natija.append(f"{i + 1}-savol: ❌ Notog'ri javob. To'g'ri javob: {rtm}")
+            rtm = ''
 
     response = f"{callback_query.from_user.first_name} sizning natijangiz: \n\n" + "\n\n".join(natija)
 
@@ -365,7 +374,6 @@ async def testni_yakunlash(callback_query: CallbackQuery):
     await callback_query.message.answer(response, reply_markup=finish_keyboard.as_markup())
     soni = 0
     tanlangan_javoblar.clear()
-    t_javob = 0
 
 
 @dp.callback_query(lambda d: d.data == "testni_qayta_yuklash")
