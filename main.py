@@ -359,7 +359,7 @@ async def testni_yakunlash(callback_query: CallbackQuery):
         elif tanlangan_javoblar[i] == 'c':
             rtm = tanlangan_javoblar[3]
         if tanlangan_javoblar[i] == togri_javoblar[i]:
-            natija.append(f"{i + 1}-savol: ✅ To'g'ri javob\n{rtm}")
+            natija.append(f"{i + 1}-savol: ✅ To'g'ri javob: {rtm}")
             rtm = ''
 
         else:
