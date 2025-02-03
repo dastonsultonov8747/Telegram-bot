@@ -352,7 +352,7 @@ async def testni_yakunlash(callback_query: CallbackQuery):
     natija = []
     for i in range(len(togri_javoblar)):
         if tanlangan_javoblar[i] == togri_javoblar[i]:
-            natija.append(f"{i + 1}-savol: ✅ To'g'ri javob")
+            natija.append(f"{i + 1}-savol: ✅ To'g'ri javob\n{togri_javoblar[i]}")
             t_javob += 1
         else:
             natija.append(f"{i + 1}-savol: ❌ Notog'ri javob. To'g'ri javob: {togri_javoblar[i]}")
